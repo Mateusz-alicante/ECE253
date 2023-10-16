@@ -10,8 +10,8 @@ module part2(
     always_comb
     case (Function)
         2'b00: ALUout = sum_out;
-        2'b01: ALUout = ((|A) | (|B)) ? 8'b00000001 : 8'b00000000;
-        2'b10: ALUout = ((&A) & (&B)) ? 8'b00000001 : 8'b00000000;
+        2'b01: ALUout = (|{A, B}) ? 8'b00000001 : 8'b00000000;
+        2'b10: ALUout = (&{A, B}) ? 8'b00000001 : 8'b00000000;
         2'b11: ALUout = {A, B};
     default : ALUout = 8'b00000000;
     endcase
