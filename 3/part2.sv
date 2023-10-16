@@ -9,7 +9,7 @@
     part1 u_sum(a,b,1'b0,sum_out[3:0],sum_out[4]);
 
     always_comb
-    case (f)
+      case (Function)
         2'b00: ALUout = sum_out;
         2'b01: if ((|a) | (|b)) ALUout = 8'b00000001;
         2'b10: if ((&a) & (&b)) ALUout = 8'b00000001;
@@ -43,8 +43,6 @@ module full_adder(input logic a, b, c_in, output logic s, c_out)
     logic y;
     assign y a^b;
     assign s y^c_in;
-
-    always_comb
     c_out = y ? c_in : b;
 
 endmodule
