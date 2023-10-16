@@ -1,13 +1,16 @@
 //part 1
 
 module part1(input logic [3:0] a, b, input logic c_in,
-             output logic [3:0] s, output logic c_out);
-    logic c1, c2, c3;
+output logic [3:0] s, output logic c_out);
+    logic c1, c2, c3, c_final;
+
+    assign c_out = {c_final, c3, c2, c1};
 
     full_adder u1(a[0],b[0],c_in,    s[0],c1);
     full_adder u2(a[1],b[1],c1,      s[1],c2);
     full_adder u3(a[2],b[2],c2,      s[2],c3);
-    full_adder u4(a[3],b[3],c3,      s[3],c_out);
+    full_adder u4(a[3],b[3],c3,      s[3],c_final);
+
 
 endmodule
 
