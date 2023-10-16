@@ -1,7 +1,7 @@
 //part 1
 
 module part1(input logic [3:0] a, b, input logic c_in,
-output logic [3:0] s, output logic c_out);
+output logic [3:0] s, c_out);
     logic c1, c2, c3, c_final;
 
     assign c_out = {c_final, c3, c2, c1};
