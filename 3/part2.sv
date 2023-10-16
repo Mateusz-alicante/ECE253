@@ -5,14 +5,14 @@ module part2(
     output logic [7:0] ALUout
 );
     logic [4:0] sum_out;
-    part1 u_sum(a,b,1'b0,sum_out[3:0],sum_out[4]);
+    part1 u_sum(A,B,1'b0,sum_out[3:0],sum_out[4]);
 
     always_comb
     case (Function)
         2'b00: ALUout = sum_out;
-        2'b01: if ((|a) | (|b)) ALUout = 8'b00000001;
-        2'b10: if ((&a) & (&b)) ALUout = 8'b00000001;
-        2'b11: ALUout = {a, b};
+        2'b01: if ((|A) | (|B)) ALUout = 8'b00000001;
+        2'b10: if ((&A) & (&B)) ALUout = 8'b00000001;
+        2'b11: ALUout = {A, B};
     default : ALUout = 8'b00000000;
     endcase
 
