@@ -1,5 +1,5 @@
 
-module alu(
+module part2(
     input logic [3:0] a, b,
     input logic [1:0] Function,
     output logic [7:0] ALUout
@@ -21,7 +21,7 @@ endmodule
 
 
 // Prev modules
-module full_adder(input logic a, b, c_in, output logic s, c_out)
+module full_adder(input logic a, b, c_in, output logic s, c_out);
     logic y;
     assign y = a^b;
     assign s = y^c_in;
