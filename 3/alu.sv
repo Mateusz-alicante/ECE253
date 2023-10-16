@@ -1,10 +1,10 @@
 
 module alu(
     input logic [3:0] a, b,
-    input logic [1:0] f;
-    output logic [7:0] ALUout,
-)
-    logic [4:0] sum_out
+    input logic [1:0] f,
+    output logic [7:0] ALUout
+);
+    logic [4:0] sum_out;
     part1 u_sum(a,b,1'b0,sum_out[3:0],sum_out[4]);
 
     always_comb
@@ -44,11 +44,10 @@ endmodule
 // Prev modules
 module full_adder(input logic a, b, c_in, output logic s, c_out)
     logic y;
-    assign y a^b;
-    assign s y^c_in;
+    assign y = a^b;
+    assign s = y^c_in;
 
-    always_comb
-    c_out = y ? c_in : b;
+    assign c_out = y ? c_in : b;
 
 endmodule
 
