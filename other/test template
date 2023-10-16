@@ -1,0 +1,29 @@
+`define assert(signal, value) \
+        if (signal !== value) begin \
+            $display("ASSERTION FAILED in %m: signal != value"); \
+            $finish; \
+        end
+
+// Testbench
+module test;
+
+  logic [2:0] MuxSelect 
+  logic [6:0] MuxIn
+  logic Out
+  
+  // Instantiate design under test
+  part1 u(MuxSelect, MuxIn, Out);
+          
+  initial begin
+    // Dump waves
+    $dumpfile("dump.vcd");
+    $dumpvars(1);
+    
+    $display("select first value");
+    MuxSelect = 2'b00;
+    MuxIn = 7'b1000000;
+    
+  end
+  
+
+endmodule
