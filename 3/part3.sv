@@ -5,7 +5,7 @@ module part3(A, B, Function, ALUout);
     output logic [( 2 * N )-1:0] ALUout;
 
     always_comb
-    case (f)
+    case (Function)
         2'b00: ALUout = A + B;
         2'b01: ALUout =  ((|A) | (|B)) ? 1 : 0;
         2'b10: ALUout = 1; ALUout =  ((&A) & (&B)) ? 1 : 0;
