@@ -1,14 +1,14 @@
 
-module alu(
+module part2(
     input logic [3:0] a, b,
-    input logic [1:0] f,
+    input logic [1:0] Function,
     output logic [7:0] ALUout
 );
     logic [4:0] sum_out;
     part1 u_sum(a,b,1'b0,sum_out[3:0],sum_out[4]);
 
     always_comb
-    case (f)
+        case (Function)
         2'b00: ALUout = sum_out;
         2'b01: if ((|a) | (|b)) ALUout = 8'b00000001;
         2'b10: if ((&a) & (&b)) ALUout = 8'b00000001;
