@@ -18,7 +18,6 @@ module full_adder(input logic a, b, c_in, output logic s, c_out);
     logic y;
     assign y = a^b;
     assign s = y^c_in;
-    always_comb
     assign c_out = y ? c_in : b; 
         
 
