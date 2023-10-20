@@ -62,3 +62,78 @@ module D_flip_flop (
 
 
 endmodule
+
+
+// Modules to use on board
+module top(LEDR, SW, KEY, HEX0, HEX1, HEX2, HEX3);
+    input logic [9:0] SW;
+    input logic [1:0] KEY;
+    output logic [9:0] LEDR;
+    output logic [6:0] HEX0, HEX1, HEX2, HEX3;
+
+
+    hex_decoder uh1 (SW[3:0], HEX0);
+
+    hex_decoder uh2 (LEDR[3:0], HEX3);
+    
+
+    part3 u1 (KEY[0], KEY[1], SW[3:0], SW[9], SW[8], SW[7], LEDR[3:0]);
+
+endmodule
+
+module hex_decoder(input logic [3:0] c, output logic [6:0] display);
+
+    // (c[0] & c[1] & c[2] & c[3] ) |
+
+    assign display[0] = 
+        (~c[3] & ~c[2] & ~c[1] & c[0]) | 
+        (~c[3] & c[2] & ~c[1] & ~c[0] ) | 
+        (c[3] & ~c[2] & c[1] & c[0] ) | 
+        (c[3] & c[2] & ~c[1] & c[0] );
+
+    assign display[1] = 
+        (~c[3] & c[2] & ~c[1] & c[0]) | 
+        (~c[3] & c[2] & c[1] & ~c[0] ) | 
+        (c[3] & ~c[2] & c[1] & c[0] ) | 
+        (c[3] & c[2] & ~c[1] & ~c[0] ) |
+        (c[3] & c[2] & c[1] & ~c[0] ) |
+        (c[3] & c[2] & c[1] & c[0] );
+
+    assign display[2] =
+        (~c[3] & ~c[2] & c[1] & ~c[0]) | 
+        (c[3] & c[2] & ~c[1] & ~c[0] ) | 
+        (c[3] & c[2] & c[1] & ~c[0] ) | 
+        (c[3] & c[2] & c[1] & c[0] );
+
+    assign display[3] =
+        (~c[3] & ~c[2] & ~c[1] & c[0]) | 
+        (~c[3] & c[2] & ~c[1] & ~c[0] ) | 
+        (~c[3] & c[2] & c[1] & c[0] ) | 
+        (c[3] & ~c[2] & ~c[1] & c[0] ) |
+        (c[3] & ~c[2] & c[1] & ~c[0] ) |
+        (c[3] & c[2] & c[1] & c[0] );
+
+    assign display[4] = 
+        (~c[3] & ~c[2] & ~c[1] & c[0]) | 
+        (~c[3] & ~c[2] & c[1] & c[0]) | 
+        (~c[3] & c[2] & ~c[1] & ~c[0] ) | 
+        (~c[3] & c[2] & ~c[1] & c[0] ) | 
+        (~c[3] & c[2] & c[1] & c[0] ) | 
+        (c[3] & ~c[2] & ~c[1] & c[0] );
+
+    assign display[5] = 
+        (~c[3] & ~c[2] & ~c[1] & c[0]) | 
+        (~c[3] & ~c[2] & c[1] & ~c[0]) | 
+        (~c[3] & ~c[2] & c[1] & c[0]) | 
+        (~c[3] & c[2] & c[1] & c[0]) | 
+        (c[3] & ~c[2] & ~c[1] & c[0]);
+
+    assign display[6] = 
+        (~c[3] & ~c[2] & ~c[1] & ~c[0]) | 
+        (~c[3] & ~c[2] & ~c[1] & c[0]) | 
+        (~c[3] & c[2] & c[1] & c[0]) | 
+        (c[3] & c[2] & ~c[1] & ~c[0]);
+
+
+
+endmodule
