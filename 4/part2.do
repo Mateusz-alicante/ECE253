@@ -24,3 +24,9 @@ force {Reset} 0
 force {Clock} 0
 run 10ns
 
+# Set different Function values
+force {Function} 'b00
+force {Function} 'b01
+force {Function} 'b10
+force {Function} 'b11
+run 10ns
