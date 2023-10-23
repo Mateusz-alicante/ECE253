@@ -8,7 +8,7 @@ module part3(clock, reset, ParallelLoadn, RotateRight, ASRight, Data_IN, Q);
         .reset_b(reset),
         .d(ParallelLoadn ? (
                 RotateRight ? 
-                    (ASRight ? (Q[0]) : (Q[1]))
+                    (Q[1])
                     : (Q[3])) 
             : Data_IN[0]),
         .q(Q[0])
@@ -41,7 +41,7 @@ module part3(clock, reset, ParallelLoadn, RotateRight, ASRight, Data_IN, Q);
         .reset_b(reset),
         .d(ParallelLoadn ? (
                 RotateRight ? 
-                    Q[0]
+                    ASRight ? (Q[3]) : (Q[0])
                     : (Q[2])) 
             : Data_IN[3]),
         .q(Q[3])
