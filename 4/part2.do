@@ -14,3 +14,13 @@ force {Reset_b} 0
 force {Data}
 force {Function}
 run 10ns
+
+# Reset filpflops
+force {Reset} 1
+force {Clock} 1
+run 10ns
+
+force {Reset} 0
+force {Clock} 0
+run 10ns
+
