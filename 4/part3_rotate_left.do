@@ -13,7 +13,7 @@ add wave {/*}
 force {clock} 0
 force {reset} 0
 force {ParallelLoadn} 1
-force {RotateRight} 1
+force {RotateRight} 0
 force {ASRight} 0
 force {Data_IN} 'b0000
 run 10ns
@@ -39,7 +39,7 @@ run 10ns
 ## Now rotate the values in the FFs
 force {reset} 0
 force {ParallelLoadn} 1
-force {RotateRight} 1
+force {RotateRight} 0
 force {ASRight} 0
 force {clock} 1
 run 10ns
