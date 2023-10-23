@@ -11,6 +11,8 @@ module part2(Clock, Reset_b, Data, Function, ALUout);
                     2'b00: ALUout <= Data + ALUout; // When F = 0, do addition
                     2'b01: ALUout <= Data * ALUout; // When F = 1, do multiplication
                     2'b10: ALUout <= ALUout << Data; // When F = 2, do left shift
+                    2'b11: ALUout <= ALUout; 
+                    default: ALUout <= ALUout; //same as case 3
                     // When no cases are met, (includes 3 and default), keep the current value at the register.
                 endcase
             end
