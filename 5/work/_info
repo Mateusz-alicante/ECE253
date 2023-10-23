@@ -1,0 +1,85 @@
+m255
+K4
+z2
+!s11f MIXED_VERSIONS
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dZ:/5
+vD_flip_flop
+Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z2 !s110 1698105607
+!i10b 1
+!s100 1<Ch=@3Y_JY6^A6>fhBY;3
+Z3 !s11b Dg1SIo80bB@j0V0VzS_@n1
+IbCOInORzLznU@Ej]3`X:z3
+Z4 VDg1SIo80bB@j0V0VzS_@n1
+S1
+R0
+Z5 w1698094553
+Z6 8part1.sv
+Z7 Fpart1.sv
+!i122 5
+L0 98 13
+Z8 OV;L;2020.1;71
+r1
+!s85 0
+31
+Z9 !s108 1698105607.000000
+!s107 part1.sv|
+Z10 !s90 -reportprogress|300|part1.sv|
+!i113 1
+Z11 tCvgOpt 0
+n@d_flip_flop
+vpart1
+R1
+R2
+!i10b 1
+!s100 bld6LZI<fBbhl0gKAA:Zk2
+R3
+I6TS8]KmMOJ8ZcakN5@Gj53
+R4
+S1
+R0
+R5
+R6
+R7
+!i122 5
+L0 1 77
+R8
+r1
+!s85 0
+31
+R9
+Z12 !s107 part1.sv|
+R10
+!i113 1
+R11
+vT_flip_flop
+R1
+R2
+!i10b 1
+!s100 F99ggMUDi^dJHgdJ];d8G0
+R3
+IBam?XV2aCY87_@?z:W?fz0
+R4
+S1
+R0
+R5
+R6
+R7
+!i122 5
+L0 81 15
+R8
+r1
+!s85 0
+31
+R9
+R12
+R10
+!i113 1
+R11
+n@t_flip_flop
