@@ -29,11 +29,36 @@ r1
 !s85 0
 31
 Z9 !s108 1698105607.000000
-!s107 part1.sv|
-Z10 !s90 -reportprogress|300|part1.sv|
+Z10 !s107 part1.sv|
+Z11 !s90 -reportprogress|300|part1.sv|
 !i113 1
-Z11 tCvgOpt 0
+Z12 tCvgOpt 0
 n@d_flip_flop
+vDisplayCounter
+R1
+Z13 !s110 1698292865
+!i10b 1
+!s100 LRz4=U<<oXK1HK3S2:jL60
+R3
+If0`kILEF<i:?HhV2M@1e?2
+R4
+S1
+R0
+Z14 w1698285231
+Z15 8part2.sv
+Z16 Fpart2.sv
+!i122 28
+L0 27 14
+R8
+r1
+!s85 0
+31
+Z17 !s108 1698292864.000000
+!s107 part2.sv|
+Z18 !s90 -reportprogress|300|part2.sv|
+!i113 1
+R12
+n@display@counter
 vpart1
 R1
 R2
@@ -54,10 +79,59 @@ r1
 !s85 0
 31
 R9
-Z12 !s107 part1.sv|
 R10
-!i113 1
 R11
+!i113 1
+R12
+vpart2
+R1
+R13
+!i10b 1
+!s100 U1SkGGkbJ<Z?O<QR?b6;@0
+R3
+I6l8[[[zNXYW^HjCEF[OG90
+R4
+S1
+R0
+R14
+R15
+R16
+!i122 28
+L0 1 25
+R8
+r1
+!s85 0
+31
+R17
+Z19 !s107 part2.sv|
+R18
+!i113 1
+R12
+vRateDivider
+R1
+R13
+!i10b 1
+!s100 ]lEiGgFXi`<UhCI5F]2Zj1
+R3
+IF?EOgGTgC3Bg7Y2b[P^3W0
+R4
+S1
+R0
+R14
+R15
+R16
+!i122 28
+L0 42 28
+R8
+r1
+!s85 0
+31
+R17
+R19
+R18
+!i113 1
+R12
+n@rate@divider
 vT_flip_flop
 R1
 R2
@@ -78,8 +152,8 @@ r1
 !s85 0
 31
 R9
-R12
 R10
-!i113 1
 R11
+!i113 1
+R12
 n@t_flip_flop
