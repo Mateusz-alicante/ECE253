@@ -49,21 +49,28 @@ module RateDivider
 
     logic n_cycles;
 
-    logic [$clog2(CLOCK_FREQUENCY):0] Q;
+    logic [$clog2(CLOCK_FREQUENCY * 4):0] Q;
 
     always_ff @(posedge ClockIn, posedge Reset) 
-        if ( Q == 'b0)
+        if (Reset)
+            case (Speed) // Here we set the counter to +1, to ensure that we wait the correct number of cases when reset is just disabled.
+                    2'b00: Q <= 0; // Full speed
+                    2'b01: Q <= CLOCK_FREQUENCY; // Once every second
+                    2'b10: Q <= CLOCK_FREQUENCY * 2; // Once every 2 seconds (0.5 Hz)
+                    2'b11: Q <= CLOCK_FREQUENCY * 4;// Once every 4 seconds (0.25 HZ)
+                endcase
+        else if ( Q == 'b0)
                 case (Speed)
-                    2'b00: Q <= 1;
-                    2'b01: Q <= CLOCK_FREQUENCY - 1;
-                    2'b10: Q <= CLOCK_FREQUENCY / 2 - 1;
-                    2'b11: Q <= CLOCK_FREQUENCY / 4 - 1;
+                    2'b00: Q <= 0; // Full speed
+                    2'b01: Q <= CLOCK_FREQUENCY - 1; // Once every second
+                    2'b10: Q <= CLOCK_FREQUENCY * 2 - 1; // Once every 2 seconds (0.5 Hz)
+                    2'b11: Q <= CLOCK_FREQUENCY * 4 - 1;// Once every 4 seconds (0.25 HZ)
                 endcase
         else
-            Q <= (Reset)? 'b0 : Q-1; 
+            Q <= Q-1; 
 
 
-    assign Enable = (Q == 'b0)?'1:'0;
+    assign Enable = (Q == 'b0 && ~Reset)?'1:'0;
 
 
 endmodule

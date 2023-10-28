@@ -15,10 +15,10 @@ force {ClockIn} 0, 1 {1 ns} -r {2 ns}
 run 2ns
 
 force {Reset} 1
-run 2ns
+run 20ns
 
 force {Reset} 0
 run 2ns
 
 
-run 30ns
+run 90ns
