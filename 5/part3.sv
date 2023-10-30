@@ -11,32 +11,39 @@ output logic NewBitOut
     logic [12:0] seq;
     logic [3:0] counter; // This keeps track of how many times to output new bit out.
     logic [($clog2(CLOCK_FREQUENCY / 2)):0] Q; // remove this later
+    logic slower;
+
+    
 
     RateDivider #(.CLOCK_FREQUENCY(CLOCK_FREQUENCY)) rd(
         .ClockIn(ClockIn),
         .Reset(Reset),
-        .Enable(NewBitOut),
+        .Enable(slower),
         .Start(Start),
-        .Q(Q),
-        .Counter(counter)
+        .Q(Q)
     );
 
     assign DotDashOut = seq[12];
 
-    always_ff@(posedge NewBitOut)
+    always_ff@(posedge slower)
         begin
             if (counter != 0)
-            begin
                 seq <= seq << 1;
-                counter <= counter - 1;
-            end
             
         end
+
+    always_ff@(negedge slower)
+        begin
+            if (counter != 0)
+            counter <= counter - 1;
+        end
+
+    assign NewBitOut = (slower && ~Start && ~Reset && counter && ~(counter == 1 && Q == 1))?'1:'0;
 
 
     always_ff @(posedge Start)
         begin
-            counter <= 13;
+            counter <= 12;
             case(Letter)
                 3'b000: seq <= 13'b0101110000000;
                 3'b001: seq <= 13'b0111010101000;
@@ -66,7 +73,6 @@ module RateDivider
     input logic Reset,
     output logic Enable,
     input logic Start,
-    input logic [3:0] Counter,
     output logic [($clog2(CLOCK_FREQUENCY / 2)):0] Q
 );
 
@@ -86,7 +92,7 @@ module RateDivider
         if (Start)
             Q <= CLOCK_FREQUENCY / 2;
 
-    assign Enable = (Q == 'b0 && ~Start && ~Reset && Counter && ~(Counter == 1 && Q == 1))?'1:'0;
+    assign Enable = (Q == 'b0)?'1:'0;
 
 
 endmodule
