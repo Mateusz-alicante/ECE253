@@ -8,7 +8,7 @@ output logic [3:0] CounterValue
 
 logic EnableDC;
 
-RateDivider rd1(
+RateDivider #(.CLOCK_FREQUENCY(CLOCK_FREQUENCY)) rd1(
     .ClockIn(ClockIn),
     .Reset(Reset),
     .Speed(Speed),
@@ -49,7 +49,7 @@ module RateDivider
 
     logic n_cycles;
 
-    logic [$clog2(CLOCK_FREQUENCY * 4):0] Q;
+    logic [$clog2(CLOCK_FREQUENCY * 4) + 1:0] Q;
 
     always_ff @(posedge ClockIn, posedge Reset) 
         if (Reset)
