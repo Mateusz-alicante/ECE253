@@ -68,7 +68,7 @@ output logic NewBitOut
 endmodule
 
 module RateDivider
-#(parameter CLOCK_FREQUENCY = 10) (
+#(parameter CLOCK_FREQUENCY = 500) (
     input logic ClockIn,
     input logic Reset,
     output logic Enable,
