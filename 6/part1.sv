@@ -29,13 +29,31 @@ module part1(
                        if (!w) Y_D = A;
                        else Y_D = B;
                    end
-                B: // Complete
-                C: // Complete
-                D: // Complete
-                E: // Complete
-                F: // Complete
-                G: // Complete
-                default: // Complete
+                B: begin
+                       if (!w) Y_D = A;
+                       else Y_D = C;
+                   end
+                C: begin
+                       if (!w) Y_D = E;
+                       else Y_D = D;
+                   end
+                D: begin
+                       if (!w) Y_D = E;
+                       else Y_D = F;
+                   end
+                E: begin
+                       if (!w) Y_D = A;
+                       else Y_D = G;
+                   end
+                F: begin
+                       if (!w) Y_D = E;
+                       else Y_D = F;
+                   end
+                G: begin
+                       if (!w) Y_D = A;
+                       else Y_D = C;
+                   end
+                default: Y_D = A;
             endcase
         end // state_table
 
@@ -43,6 +61,7 @@ module part1(
         always_ff @(posedge Clock) begin
             if(Reset == 1'b1)
                 // Should set reset state to state A
+                y_Q <= A;
             else
                 y_Q <= Y_D;
         end // state_FFS

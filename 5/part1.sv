@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 module part1 (
     input logic Clock,
     input logic Enable,
@@ -109,6 +109,3 @@ module D_flip_flop (
 
 
 endmodule
-=======
-
->>>>>>> b82542797f5bbc56b351f1bfebda7532199a3b52

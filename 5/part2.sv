@@ -49,7 +49,7 @@ module RateDivider
 
     logic n_cycles;
 
-    logic [$clog2(CLOCK_FREQUENCY * 4) + 1:0] Q;
+    logic [$clog2(CLOCK_FREQUENCY * 4):0] Q;
 
     always_ff @(posedge ClockIn, posedge Reset) 
         if (Reset)
