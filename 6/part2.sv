@@ -9,10 +9,10 @@ module part2(
 );
 
     // lots of wires to connect our datapath and control
-    logic ld_a, ld_b, ld_r;
-    // TODO: Add other ld_* signals you need here.
+    logic ld_a, ld_b, ld_r, ld_c, ld_x;
+    // TODO: Add other ld_* signals you need here. DONE
     logic ld_alu_out;
-    logic alu_select_a, alu_select_b;
+    logic alu_select_a, alu_select_b, alu_select_c, alu_select_x;
     logic alu_op;
 
     control C0(
@@ -26,10 +26,14 @@ module part2(
         .ld_a(ld_a),
         .ld_b(ld_b),
         .ld_r(ld_r),
+        .ld_c(ld_c),
+        .ld_x(ld_x)
         // TODO: Add other connections here.
         
         .alu_select_a(alu_select_a),
         .alu_select_b(alu_select_b),
+        .alu_select_c(alu_select_c),
+        .alu_select_x(alu_select_x),
         .alu_op(alu_op),
         .result_valid(ResultValid)
     );
@@ -43,10 +47,14 @@ module part2(
         .ld_a(ld_a),
         .ld_b(ld_b),
         .ld_r(ld_r),
-        // TODO: Add other connections here. 
+        .ld_c(ld_c),
+        .ld_x(ld_x)
+        // TODO: Add other connections here. DONE
 
         .alu_select_a(alu_select_a),
         .alu_select_b(alu_select_b),
+        .alu_select_c(alu_select_c),
+        .alu_select_x(alu_select_x),
         .alu_op(alu_op),
 
         .data_in(DataIn),
@@ -88,11 +96,19 @@ module control(
             S_LOAD_B: next_state = go ? S_LOAD_B_WAIT : S_LOAD_B; 
             S_LOAD_B_WAIT: next_state = go ? S_LOAD_B_WAIT : S_CYCLE_0; 
 
-            // TODO: Add states for other inputs here.
+            // TODO: Add states for other inputs here. ==> CHECK
+            S_LOAD_C: next_state = go ? S_LOAD_C_WAIT : S_LOAD_C;
+            S_LOAD_C_WAIT: next_state = go ? S_LOAD_C_WAIT : S_CYCLE_1;
+            S_LOAD_X: next_state = go ? S_LOAD_X_WAIT : S_LOAD_X;
+            S_LOAD_X_WAIT: next_state = go ? S_LOAD_X_WAIT : S_CYCLE_2;
             
             S_CYCLE_0: next_state = S_CYCLE_1;
             // TODO: Add new states for the required operation. 
-            S_CYCLE_1: next_state = S_LOAD_A; // we will be done our two operations, start over after
+            S_CYCLE_1: next_state = S_LOAD_A; // we will be done our two operations, start over after ==> CHECK
+            S_CYCLE_2: next_state = S_LOAD_B;
+            //S_CYCLE_3: next_state = S_LOAD_C;
+            //S_CYCLE_4: next state = S_LOAD_X;
+            
             default:   next_state = S_LOAD_A_RST;
         endcase
     end // state_table
@@ -153,9 +169,9 @@ module datapath(
     input logic ld_alu_out,
     input logic ld_a, ld_b,
     // TODO: Add additional signals from control path here. 
-    input logic ld_r,
+    input logic ld_r, ld_x,
     input logic alu_op,
-    input logic alu_select_a, alu_select_b,
+    input logic alu_select_a, alu_select_b, alu_select_c, alu_select_x
     output logic [7:0] data_result
     );
 
