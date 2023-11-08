@@ -75,6 +75,8 @@ module control(
             S_CYCLE_3: next_state = S_LOAD; // we will be done our two operations, start over after
             default:   next_state = S_LOAD_RST;
         endcase
+
+        $display("Current State: %0d, Next State: %0d", current_state, next_state);
     end // state_table
 
     // output logic logic aka all of our datapath control signals
@@ -83,7 +85,6 @@ module control(
         divide = 1'b0;
         ld = 1'b0;
         result_valid = 1'b0;
-        ld = 0'b0;
 
         case (current_state)
             S_LOAD_RST: begin
@@ -108,9 +109,6 @@ module control(
             end
         // We don't need a default case since we already made sure all of our outputs were assigned a value at the start of the always block.
         endcase
-
-        $display("Current State: %0d", current_state);
-        $display("Next State: %0d ================", next_state);
     end // enable_signals
 
     // current_state logicisters
@@ -144,10 +142,12 @@ module datapath(
 
     // registers a and b with associated logic
     always @(posedge clk) begin
+        $display("Divisor: %d", Divisor);
+        $display("Divident: %d", Divident);
+
         if(reset) begin
             Divisor <= 4'b0;
             Divident <= 4'b0;
-            reg_A <= 4'b0;
         end
         else begin
             if(ld) begin
@@ -164,25 +164,18 @@ module datapath(
             Remainder <= 4'b0;
         end
         else
-            $display("Initial Divident: %0b", Divident);
+            
             if (divide) begin
-                
                 Divident = Divident << 1;
-                $display("Initial Reg A: %0b", reg_A);
                 reg_A = reg_A - Divisor;
-                $display("middle Reg A: %0b", reg_A);
-                $display("Reg_A[3]: %0b", reg_A[3]);
-                Divident[0] = ~reg_A[3];
+                Divident[0] = reg_A[3];
                 reg_A = reg_A + Divisor;
-                $display("Final Reg A: %0b", reg_A);
             end
 
             if(ld_r) begin
                 Quotient = Divident;
                 Remainder = reg_A;
             end
-
-            $display("Final Divident: %0b", Divident);
     end
 
 

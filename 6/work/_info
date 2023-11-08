@@ -9,14 +9,62 @@ z2
 !i10f 100
 cModel Technology
 Z0 dZ:/6
+vcontrol
+Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+Z2 !s110 1699491823
+!i10b 1
+!s100 IW?5`]VoKGG>W`0IKmUUe3
+Z3 !s11b Dg1SIo80bB@j0V0VzS_@n1
+I_8cMdW5afZWYZiXlXKF2I1
+Z4 VDg1SIo80bB@j0V0VzS_@n1
+S1
+R0
+Z5 w1699480800
+Z6 8part3.sv
+Z7 Fpart3.sv
+!i122 49
+L0 42 82
+Z8 OV;L;2020.1;71
+r1
+!s85 0
+31
+Z9 !s108 1699491823.000000
+!s107 part3.sv|
+Z10 !s90 -reportprogress|300|part3.sv|
+!i113 1
+Z11 tCvgOpt 0
+vdatapath
+R1
+R2
+!i10b 1
+!s100 mUm6EfV[SZkChI2k3;=oz2
+R3
+Igl_O=P8cUNYd;FG@jMfHN3
+R4
+S1
+R0
+R5
+R6
+R7
+!i122 49
+L0 126 64
+R8
+r1
+!s85 0
+31
+R9
+Z12 !s107 part3.sv|
+R10
+!i113 1
+R11
 vpart1
-DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
+R1
 !s110 1699383814
 !i10b 1
 !s100 5BOkQDPn6LI0lUQmXa;TA0
-!s11b Dg1SIo80bB@j0V0VzS_@n1
+R3
 IznQXl[aBWU<jBPXOonQ>?2
-VDg1SIo80bB@j0V0VzS_@n1
+R4
 S1
 R0
 w1699155298
@@ -24,7 +72,7 @@ w1699155298
 Fpart1.sv
 !i122 3
 L0 1 74
-OV;L;2020.1;71
+R8
 r1
 !s85 0
 31
@@ -32,4 +80,28 @@ r1
 !s107 part1.sv|
 !s90 -reportprogress|300|part1.sv|
 !i113 1
-tCvgOpt 0
+R11
+vpart3
+R1
+R2
+!i10b 1
+!s100 Jgm[G6[TGPWjGWOoo_?@42
+R3
+I0YLCjZ3M[EE5f2H>>QgnP3
+R4
+S1
+R0
+R5
+R6
+R7
+!i122 49
+L0 1 39
+R8
+r1
+!s85 0
+31
+R9
+R12
+R10
+!i113 1
+R11
