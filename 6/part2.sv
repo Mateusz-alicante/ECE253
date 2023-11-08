@@ -81,6 +81,11 @@ module control(
                                 S_LOAD_A_WAIT   = 'd2,
                                 S_LOAD_B        = 'd3,
                                 S_LOAD_B_WAIT   = 'd4,
+                                //ADDED THE FOLOWWING STATES
+                                S_LOAD_C = 'd7,
+                                S_LOAD_C_WAIT = 'd8,
+                                S_LOAD_X = 'd9,
+                                S_LOAD_X_WAIT = 'd10,
                                 // TODO: Add states to load other inputs here. 
                                 S_CYCLE_0       = 'd5,
                                 S_CYCLE_1       = 'd6} statetype;
@@ -168,7 +173,7 @@ module datapath(
     input logic [7:0] data_in,
     input logic ld_alu_out,
     input logic ld_a, ld_b,
-    // TODO: Add additional signals from control path here. 
+    // TODO: Add additional signals from control path here. ==> DONE
     input logic ld_r, ld_x,
     input logic alu_op,
     input logic alu_select_a, alu_select_b, alu_select_c, alu_select_x
@@ -188,11 +193,16 @@ module datapath(
         if(reset) begin
             a <= 8'b0;
             b <= 8'b0;
+           //Add c and x?
+            c <= 8'b0;
+            x <= 8'b0;
         end
         else begin
             if(ld_a) a <= ld_alu_out ? alu_out : data_in; // load alu_out if load_alu_out signal is high, otherwise load from data_in
             if(ld_b) b <= ld_alu_out ? alu_out : data_in; 
             //TODO: Add signals to set additional registers. 
+            if (ld_c) c <= ld_alu_out ? alu_out : data_in;
+            if (ld_x) x <= ld_alu_out ? alu_out : data_in;
             // Note that only registers A and B have a mux to load values from data_in or from alu_out
         end
     end
