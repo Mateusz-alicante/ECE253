@@ -88,7 +88,10 @@ module control(
                                 S_LOAD_X_WAIT = 'd10,
                                 // TODO: Add states to load other inputs here. 
                                 S_CYCLE_0       = 'd5,
-                                S_CYCLE_1       = 'd6} statetype;
+                                S_CYCLE_1       = 'd6
+                                S_CYCLE_2 = 'd11;
+                               S_CYCLE_3 = 'd12
+                              } statetype;
                                 
     statetype current_state, next_state;                            
 
@@ -99,18 +102,18 @@ module control(
             S_LOAD_A: next_state = go ? S_LOAD_A_WAIT : S_LOAD_A; // Loop in current state until value is input
             S_LOAD_A_WAIT: next_state = go ? S_LOAD_A_WAIT : S_LOAD_B; 
             S_LOAD_B: next_state = go ? S_LOAD_B_WAIT : S_LOAD_B; 
-            S_LOAD_B_WAIT: next_state = go ? S_LOAD_B_WAIT : S_CYCLE_0; 
+            S_LOAD_B_WAIT: next_state = go ? S_LOAD_B_WAIT : S_LOAD_C; 
 
             // TODO: Add states for other inputs here. ==> CHECK
             S_LOAD_C: next_state = go ? S_LOAD_C_WAIT : S_LOAD_C;
-            S_LOAD_C_WAIT: next_state = go ? S_LOAD_C_WAIT : S_CYCLE_1;
+            S_LOAD_C_WAIT: next_state = go ? S_LOAD_C_WAIT : S_LOAD_X;
             S_LOAD_X: next_state = go ? S_LOAD_X_WAIT : S_LOAD_X;
-            S_LOAD_X_WAIT: next_state = go ? S_LOAD_X_WAIT : S_CYCLE_2;
+            S_LOAD_X_WAIT: next_state = go ? S_LOAD_X_WAIT : S_CYCLE_0;
             
             S_CYCLE_0: next_state = S_CYCLE_1;
             // TODO: Add new states for the required operation. 
-            S_CYCLE_1: next_state = S_LOAD_A; // we will be done our two operations, start over after ==> CHECK
-            S_CYCLE_2: next_state = S_LOAD_B;
+            S_CYCLE_1: next_state = S_CYCLE_2; // we will be done our two operations, start over after ==> CHECK
+            S_CYCLE_2: next_state = S_CYCLE_3;
             //S_CYCLE_3: next_state = S_LOAD_C;
             //S_CYCLE_4: next state = S_LOAD_X;
             
@@ -120,13 +123,13 @@ module control(
 
     // output logic logic aka all of our datapath control signals
     always_comb begin
-        // By default make all our signals 0
+        // By default make all our signals 0. MODIFY BIT SIZE
         ld_alu_out = 1'b0;
         ld_a = 1'b0;
         ld_b = 1'b0;
         ld_r = 1'b0;
-        alu_select_a = 1'b0;
-        alu_select_b = 1'b0;
+        alu_select_a = 2'b0;
+        alu_select_b = 2'b0;
         alu_op       = 1'b0;
         result_valid = 1'b0;
 
@@ -144,14 +147,27 @@ module control(
             S_CYCLE_0: begin // Do A <- A * A
                 ld_alu_out = 1'b1; 
                 ld_a = 1'b1; // store result back into A
-                alu_select_a = 1'b0; // Select register A
-                alu_select_b = 1'b0; // Also select register A
+                alu_select_a = 2'b0; // Select register A
+                alu_select_b = 2'b0; // Also select register A
                 alu_op = 1'b1; // Do multiply operation
             end
             S_CYCLE_1: begin
                 ld_r = 1'b1; // store result in result register
-                alu_select_a = 1'b0; // Select register A
-                alu_select_b = 1'b1; // Select register B
+                alu_select_a = 2'b0; // Select register A
+                alu_select_b = 2'b1; // Select register B
+                alu_op = 1'b0; // Do Add operation
+            end
+            //ADD LOGIC FOR CYCLES 2 AND 3. MORE CYCLES?
+            S_CYCLE_2: begin
+                ld_r = 1'b1; // store result in result register
+                alu_select_a = 2'b0; // Select register A
+                alu_select_b = 2'b1; // Select register B
+                alu_op = 1'b0; // Do Add operation
+            end
+            S_CYCLE_3: begin
+                ld_r = 1'b1; // store result in result register
+                alu_select_a = 2'b0; // Select register A
+                alu_select_b = 2'b1; // Select register B
                 alu_op = 1'b0; // Do Add operation
             end
         // We don't need a default case since we already made sure all of our outputs were assigned a value at the start of the always block.
