@@ -81,7 +81,7 @@ module control(
     always_comb begin
         // By default make all our signals 0
         divide = 1'b0;
-        ld = 1'b0;
+        ld_r = 1'b0;
         result_valid = 1'b0;
         ld = 0'b0;
 
@@ -136,11 +136,9 @@ module datapath(
     );
 
     // input logic logicisters
-    logic [3:0] Divisor, Divident, reg_A;
+    logic [3:0] Divident;
+    logic [4:0] reg_A, Divisor;
 
-    // output logic of the alu
-    // alu input logic muxes
-    logic [3:0] alu_Divisor, alu_Divident;
 
     // registers a and b with associated logic
     always @(posedge clk) begin
@@ -166,15 +164,17 @@ module datapath(
         else
             $display("Initial Divident: %0b", Divident);
             if (divide) begin
-                
+                reg_A = reg_A << 1;
+                reg_A[0] = Divident[3];
                 Divident = Divident << 1;
-                $display("Initial Reg A: %0b", reg_A);
                 reg_A = reg_A - Divisor;
-                $display("middle Reg A: %0b", reg_A);
-                $display("Reg_A[3]: %0b", reg_A[3]);
-                Divident[0] = ~reg_A[3];
-                reg_A = reg_A + Divisor;
-                $display("Final Reg A: %0b", reg_A);
+                if (reg_A[3] == 1'b1) begin
+                    Divident[0] = 1'b0;
+                    reg_A = reg_A + Divisor;
+                end
+                else begin
+                    Divident[0] = 1'b1;
+                end
             end
 
             if(ld_r) begin
@@ -182,7 +182,6 @@ module datapath(
                 Remainder = reg_A;
             end
 
-            $display("Final Divident: %0b", Divident);
     end
 
 

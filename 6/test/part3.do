@@ -10,6 +10,7 @@ log {/*}
 add wave {/*}
 
 
+
 force {Clock} 0, 1 {1 ns} -r {2 ns}
 
 force {Go} 0
@@ -22,12 +23,21 @@ run 2ns
 force {Reset} 0
 run 3ns
 
-force {Divident} 'b0111
-force {Divisor} 'b0011
+force {Divident} 'b1111
+force {Divisor} 'b0010
 force {Go} 1
 run 3ns
 
 force {Go} 0
 run 3ns
 
-run 20ns
+run 15ns
+
+
+force {Divident} 'b1111
+force {Divisor} 'b0011
+force {Go} 1
+run 3ns
+
+force {Go} 0
+run 3ns
