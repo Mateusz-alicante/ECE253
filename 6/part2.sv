@@ -13,7 +13,7 @@ module part2(
     // TODO: Add other ld_* signals you need here. DONE
     logic ld_alu_out;
     logic alu_select_a, alu_select_b, alu_select_c, alu_select_x;
-    logic alu_op;
+    logic alu_op; //TAKE ANOTHER LOOK AT THIS
 
     control C0(
         .clk(Clock),
@@ -89,8 +89,9 @@ module control(
                                 // TODO: Add states to load other inputs here. 
                                 S_CYCLE_0       = 'd5,
                                 S_CYCLE_1       = 'd6
-                                S_CYCLE_2 = 'd11;
-                               S_CYCLE_3 = 'd12
+                                S_CYCLE_2 = 'd11,
+                               S_CYCLE_3 = 'd12,
+                               S_CYCLE_4 = 'd13
                               } statetype;
                                 
     statetype current_state, next_state;                            
@@ -114,6 +115,7 @@ module control(
             // TODO: Add new states for the required operation. 
             S_CYCLE_1: next_state = S_CYCLE_2; // we will be done our two operations, start over after ==> CHECK
             S_CYCLE_2: next_state = S_CYCLE_3;
+            S_CYCLE_3: next_state = S_CYCLE_4;
             //S_CYCLE_3: next_state = S_LOAD_C;
             //S_CYCLE_4: next state = S_LOAD_X;
             
@@ -157,7 +159,7 @@ module control(
                 alu_select_b = 2'b1; // Select register B
                 alu_op = 1'b0; // Do Add operation
             end
-            //ADD LOGIC FOR CYCLES 2 AND 3. MORE CYCLES?
+            //ADD LOGIC FOR CYCLES 2, 3 AND 4. MORE CYCLES?
             S_CYCLE_2: begin
                 ld_r = 1'b1; // store result in result register
                 alu_select_a = 2'b0; // Select register A
@@ -165,6 +167,12 @@ module control(
                 alu_op = 1'b0; // Do Add operation
             end
             S_CYCLE_3: begin
+                ld_r = 1'b1; // store result in result register
+                alu_select_a = 2'b0; // Select register A
+                alu_select_b = 2'b1; // Select register B
+                alu_op = 1'b0; // Do Add operation
+            end
+            S_CYCLE_4: begin
                 ld_r = 1'b1; // store result in result register
                 alu_select_a = 2'b0; // Select register A
                 alu_select_b = 2'b1; // Select register B
@@ -248,7 +256,7 @@ module datapath(
         endcase
     end
 
-    // The ALU
+    // The ALU. ADD CASES HERE. 
     always_comb begin : ALU
         case (alu_op)
             0: alu_out = alu_a + alu_b; //performs addition
