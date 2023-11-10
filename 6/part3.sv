@@ -3,7 +3,7 @@ input logic Clock,
 input logic Reset,
 input logic Go,
 input logic [3:0] Divisor,
-input logic [3:0] Divident,
+input logic [3:0] Dividend,
 output logic [3:0] Quotient,
 output logic [3:0] Remainder,
 output logic ResultValid
@@ -25,9 +25,10 @@ output logic ResultValid
     datapath D0(
         .clk(Clock),
         .reset(Reset),
+        .go(Go),
 
         .Divisor_in(Divisor),
-        .Divident_in(Divident),
+        .Dividend_in(Dividend),
         .Quotient(Quotient),
         .Remainder(Remainder),
         .ld_r(ld_r),
@@ -53,10 +54,10 @@ module control(
     typedef enum logic [3:0]  { S_LOAD_RST    = 'd0,
                                 S_LOAD        = 'd1,
                                 // TODO: Add states to load other inputs here. 
-                                S_CYCLE_0       = 'd5,
-                                S_CYCLE_1       = 'd6,
-                                S_CYCLE_2       = 'd7,
-                                S_CYCLE_3       = 'd8} statetype;
+                                S_CYCLE_0       = 'd2,
+                                S_CYCLE_1       = 'd3,
+                                S_CYCLE_2       = 'd4,
+                                S_CYCLE_3       = 'd5} statetype;
                                 
     statetype current_state, next_state;                            
 
@@ -75,6 +76,8 @@ module control(
             S_CYCLE_3: next_state = S_LOAD; // we will be done our two operations, start over after
             default:   next_state = S_LOAD_RST;
         endcase
+        $display("Current State: %0d", current_state);
+        $display("Next State: %0d ================", next_state);
     end // state_table
 
     // output logic logic aka all of our datapath control signals
@@ -93,7 +96,7 @@ module control(
                 ld = 1'b1;
                 result_valid = 1'b1;
                 end
-            S_CYCLE_0: begin // Do A <- A * A
+            S_CYCLE_0: begin 
               divide = 1'b1;
             end
             S_CYCLE_1: begin
@@ -109,8 +112,7 @@ module control(
         // We don't need a default case since we already made sure all of our outputs were assigned a value at the start of the always block.
         endcase
 
-        $display("Current State: %0d", current_state);
-        $display("Next State: %0d ================", next_state);
+        
     end // enable_signals
 
     // current_state logicisters
@@ -126,7 +128,8 @@ endmodule
 module datapath(
     input logic clk,
     input logic reset,
-    input logic [3:0] Divisor_in, Divident_in,
+    input logic go,
+    input logic [3:0] Divisor_in, Dividend_in,
     output logic [3:0] Quotient,
     output logic [3:0] Remainder,
     // TODO: Add additional signals from control path here. 
@@ -136,7 +139,7 @@ module datapath(
     );
 
     // input logic logicisters
-    logic [3:0] Divident;
+    logic [3:0] Dividend;
     logic [4:0] reg_A, Divisor;
 
 
@@ -144,41 +147,47 @@ module datapath(
     always @(posedge clk) begin
         if(reset) begin
             Divisor <= 4'b0;
-            Divident <= 4'b0;
-            reg_A <= 4'b0;
+            Dividend <= 4'b0;
         end
         else begin
             if(ld) begin
                 Divisor <= Divisor_in;
-                Divident <= Divident_in;
+                Dividend <= Dividend_in;
+                reg_A <= 4'b0;
             end
         end
     end
 
     // output logic result logicister
     always@(posedge clk) begin
+        $display("divide: %0d", divide);
         if(reset) begin
             Quotient <= 4'b0;
             Remainder <= 4'b0;
         end
         else
-            $display("Initial Divident: %0b", Divident);
             if (divide) begin
+                $display("Reg_A: %0b", reg_A);
+
                 reg_A = reg_A << 1;
-                reg_A[0] = Divident[3];
-                Divident = Divident << 1;
+                reg_A[0] = Dividend[3];
+                Dividend = Dividend << 1;
                 reg_A = reg_A - Divisor;
+                $display("Reg_A middle: %0b", reg_A);
                 if (reg_A[3] == 1'b1) begin
-                    Divident[0] = 1'b0;
+                    Dividend[0] = 1'b0;
                     reg_A = reg_A + Divisor;
                 end
                 else begin
-                    Divident[0] = 1'b1;
+                    Dividend[0] = 1'b1;
                 end
+                $display("Reg_A final: %0b", reg_A);
             end
 
             if(ld_r) begin
-                Quotient = Divident;
+                $display("Quotient: %0d", Dividend);
+                $display("Remainder: %0d", reg_A);
+                Quotient = Dividend;
                 Remainder = reg_A;
             end
 

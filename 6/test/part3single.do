@@ -25,16 +25,6 @@ run 2ns
 force {Reset} 0
 run 3ns
 
-force {Dividend} 'b0111
-force {Divisor} 'b0011
-force {Go} 1
-run 3ns
-
-force {Go} 0
-run 3ns
-
-run 15ns
-
 
 force {Dividend} 'b1000
 force {Divisor} 'b0101
@@ -46,8 +36,7 @@ run 3ns
 
 run 15ns
 
-
-force {Dividend} 'b1111
+force {Dividend} 'b1000
 force {Divisor} 'b0101
 force {Go} 1
 run 3ns
@@ -56,3 +45,4 @@ force {Go} 0
 run 3ns
 
 run 15ns
+
