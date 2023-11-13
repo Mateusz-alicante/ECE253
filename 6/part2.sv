@@ -146,11 +146,11 @@ module control(
             S_LOAD_B: begin
                 ld_b = 1'b1;
                 end
-            S_CYCLE_0: begin // Do A <- A * A
+            S_CYCLE_0: begin // Do A <- A * A. Modify this to be A*(x * x)
                 ld_alu_out = 1'b1; 
-                ld_a = 1'b1; // store result back into A
+                ld_x = 1'b1; // store result back into x
                 alu_select_a = 2'b0; // Select register A
-                alu_select_b = 2'b0; // Also select register A
+                alu_select_a = 2'b0; // Also select register A
                 alu_op = 1'b1; // Do multiply operation
             end
             S_CYCLE_1: begin
