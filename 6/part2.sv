@@ -87,7 +87,7 @@ module control(
                                 S_CYCLE_1       = 'd6,
                                 S_CYCLE_2 = 'd11,
                                S_CYCLE_3 = 'd12,
-                               S_CYCLE_4 = 'd13,
+                               S_CYCLE_4 = 'd13
                                //S_CYCLE_5 = 'd14;
                               } statetype;
                                 
