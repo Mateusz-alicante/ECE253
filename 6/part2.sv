@@ -27,7 +27,7 @@ module part2(
         .ld_b(ld_b),
         .ld_r(ld_r),
         .ld_c(ld_c),
-        .ld_x(ld_x)
+        .ld_x(ld_x),
         // TODO: Add other connections here.
         
         .alu_select_a(alu_select_a),
@@ -46,7 +46,7 @@ module part2(
         .ld_b(ld_b),
         .ld_r(ld_r),
         .ld_c(ld_c),
-        .ld_x(ld_x)
+        .ld_x(ld_x),
         // TODO: Add other connections here. DONE
 
         .alu_select_a(alu_select_a),
@@ -84,7 +84,7 @@ module control(
                                 S_LOAD_X_WAIT = 'd10,
                                 // TODO: Add states to load other inputs here. 
                                 S_CYCLE_0       = 'd5,
-                                S_CYCLE_1       = 'd6
+                                S_CYCLE_1       = 'd6,
                                 S_CYCLE_2 = 'd11,
                                S_CYCLE_3 = 'd12,
                                S_CYCLE_4 = 'd13,
@@ -205,9 +205,9 @@ module datapath(
     input logic ld_alu_out,
     input logic ld_a, ld_b,
     // TODO: Add additional signals from control path here. ==> DONE
-    input logic ld_r, ld_x, ld_c
+    input logic ld_r, ld_x, ld_c,
     input logic alu_op,
-    input logic alu_select_a, alu_select_b
+    input logic alu_select_a, alu_select_b,
     output logic [7:0] data_result
     );
 
