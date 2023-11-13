@@ -17,7 +17,7 @@ force {Reset} 1
 run 2ns
 
 force {Reset} 0
-run 3ns
+run 2ns
 
 force {w} 1
 run 2ns

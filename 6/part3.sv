@@ -159,6 +159,7 @@ module datapath(
     end
 
     // output logic result logicister
+    
     always@(posedge clk) begin
         $display("divide: %0d", divide);
         if(reset) begin
