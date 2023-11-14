@@ -73,7 +73,7 @@ module control(
     output logic result_valid
     );
 
-	typedef enum logic [4:0]  { S_LOAD_A_RST    = 'd0,
+	typedef enum logic [5:0]  { S_LOAD_A_RST    = 'd0,
                                 S_LOAD_A        = 'd1,
                                 S_LOAD_A_WAIT   = 'd2,
                                 S_LOAD_B        = 'd3,
