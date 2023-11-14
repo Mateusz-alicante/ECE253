@@ -158,24 +158,24 @@ module control(
                 ld_a = 1'b1; // store result in result register
                 alu_select_a = 2'b11; // Select register A
                 alu_select_b = 2'b0; // Select register B
-                alu_op = 1'b1; // Do Add operation
+                alu_op = 1'b1; // Do multiply operation
             end
             //ADD LOGIC FOR CYCLES 2, 3 AND 4. MORE CYCLES?
             S_CYCLE_2: begin //do B*x
                 ld_b = 1'b1; // store result in result register
-                alu_select_a = 2'b0; // Select register A
+                alu_select_a = 2'b01; // Select register A
                 alu_select_b = 2'b11; // Select register B
-                alu_op = 1'b1; // Do Add operation
+                alu_op = 1'b1; // Do multiply operation
             end
             S_CYCLE_3: begin //add A*(x^2) + B*x
                 ld_a = 1'b1; // store result in result register
-                alu_select_a = 2'b11; // Select register A
-                alu_select_b = 2'b11; // Select register B
+                alu_select_a = 2'b0; // Select register A
+                alu_select_b = 2'b01; // Select register B
                 alu_op = 1'b0; // Do Add operation
             end
             S_CYCLE_4: begin // Add + C
                 ld_r = 1'b1; // store result in result register
-                alu_select_a = 2'b11; // Select register A
+                alu_select_a = 2'b0; // Select register A
                 alu_select_b = 2'b10; // Select register B
                 alu_op = 1'b0; // Do Add operation
             end
