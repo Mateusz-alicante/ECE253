@@ -1,4 +1,3 @@
-
 module part2(
     input logic Clock,
     input logic Reset,
@@ -130,7 +129,7 @@ module control(
         ld_a = 1'b0;
         ld_b = 1'b0;
         ld_c = 1'b0;
-        ld_c = 1'b0;
+        ld_x = 1'b0;
         ld_r = 1'b0;
         
         alu_select_a = 2'b0;
@@ -153,33 +152,37 @@ module control(
                 ld_alu_out = 1'b1; 
                 ld_a = 1'b1;
                 //ld_x = 1'b1; // store result back into x
-                alu_select_a = 2'b0; // Select register A
+                alu_select_a = 2'b00; // Select register A
                 alu_select_b = 2'b11; // Also select register x
                 //ld_a = 1'b1;
                 alu_op = 1'b1; // Do multiply operation
             end
             S_CYCLE_1: begin //do A*(x^2)
+		ld_alu_out = 1'b1;
                 ld_a = 1'b1; // store result in result register
-                alu_select_a = 2'b0; // Select register A
+                alu_select_a = 2'b00; // Select register A
                 alu_select_b = 2'b11; // Select register x
                 alu_op = 1'b1; // Do multiply operation
             end
             //ADD LOGIC FOR CYCLES 2, 3 AND 4. MORE CYCLES?
             S_CYCLE_2: begin //do B*x
+		ld_alu_out = 1'b0;
                 ld_b = 1'b1; // store result in result register
                 alu_select_a = 2'b01; // Select register B
                 alu_select_b = 2'b11; // Select register x
                 alu_op = 1'b1; // Do multiply operation
             end
             S_CYCLE_3: begin //add A*(x^2) + B*x
+		ld_alu_out = 1'b1;
                 ld_a = 1'b1; // store result in result register
-                alu_select_a = 2'b0; // Select register A
+                alu_select_a = 2'b00; // Select register A
                 alu_select_b = 2'b01; // Select register B
                 alu_op = 1'b0; // Do Add operation
             end
             S_CYCLE_4: begin // Add + C
+		//ld_alu_out = 1'b0;
                 ld_r = 1'b1; // store result in result register
-                alu_select_a = 2'b0; // Select register A
+                alu_select_a = 2'b00; // Select register A
                 alu_select_b = 2'b10; // Select register C
                 alu_op = 1'b0; // Do Add operation
             end
