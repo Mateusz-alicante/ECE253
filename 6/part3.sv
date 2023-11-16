@@ -167,13 +167,11 @@ module datapath(
         end
         else
             if (divide) begin
-                $display("Reg_A: %0b", reg_A);
 
                 reg_A = reg_A << 1;
                 reg_A[0] = Dividend[3];
                 Dividend = Dividend << 1;
                 reg_A = reg_A - Divisor;
-                $display("Reg_A middle: %0b", reg_A);
                 if (reg_A[3] == 1'b1) begin
                     Dividend[0] = 1'b0;
                     reg_A = reg_A + Divisor;
@@ -181,12 +179,9 @@ module datapath(
                 else begin
                     Dividend[0] = 1'b1;
                 end
-                $display("Reg_A final: %0b", reg_A);
             end
 
             if(ld_r) begin
-                $display("Quotient: %0d", Dividend);
-                $display("Remainder: %0d", reg_A);
                 Quotient = Dividend;
                 Remainder = reg_A;
             end
