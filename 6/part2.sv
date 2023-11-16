@@ -1,4 +1,3 @@
-
 module part2(
     input logic Clock,
     input logic Reset,
@@ -12,7 +11,7 @@ module part2(
     logic ld_a, ld_b, ld_r, ld_c, ld_x;
     // TODO: Add other ld_* signals you need here. DONE
     logic ld_alu_out;
-    logic alu_select_a, alu_select_b, alu_select_c, alu_select_x;
+    logic alu_select_a, alu_select_b;
     logic alu_op; //TAKE ANOTHER LOOK AT THIS
 
     control C0(
@@ -27,13 +26,12 @@ module part2(
         .ld_b(ld_b),
         .ld_r(ld_r),
         .ld_c(ld_c),
-        .ld_x(ld_x)
+        .ld_x(ld_x),
+        
         // TODO: Add other connections here.
         
         .alu_select_a(alu_select_a),
         .alu_select_b(alu_select_b),
-        .alu_select_c(alu_select_c),
-        .alu_select_x(alu_select_x),
         .alu_op(alu_op),
         .result_valid(ResultValid)
     );
@@ -48,13 +46,12 @@ module part2(
         .ld_b(ld_b),
         .ld_r(ld_r),
         .ld_c(ld_c),
-        .ld_x(ld_x)
+        .ld_x(ld_x),
+        
         // TODO: Add other connections here. DONE
 
         .alu_select_a(alu_select_a),
         .alu_select_b(alu_select_b),
-        .alu_select_c(alu_select_c),
-        .alu_select_x(alu_select_x),
         .alu_op(alu_op),
 
         .data_in(DataIn),
@@ -69,14 +66,14 @@ module control(
     input logic reset,
     input logic go,
 
-    output logic ld_a, ld_b, ld_r,
+    output logic ld_a, ld_b, ld_r, ld_c, ld_x,
     output logic ld_alu_out,
     output logic alu_select_a, alu_select_b,
     output logic alu_op,
     output logic result_valid
     );
 
-    typedef enum logic [2:0]  { S_LOAD_A_RST    = 'd0,
+	typedef enum logic [5:0]  { S_LOAD_A_RST    = 'd0,
                                 S_LOAD_A        = 'd1,
                                 S_LOAD_A_WAIT   = 'd2,
                                 S_LOAD_B        = 'd3,
@@ -88,10 +85,11 @@ module control(
                                 S_LOAD_X_WAIT = 'd10,
                                 // TODO: Add states to load other inputs here. 
                                 S_CYCLE_0       = 'd5,
-                                S_CYCLE_1       = 'd6
+                                S_CYCLE_1       = 'd6,
                                 S_CYCLE_2 = 'd11,
                                S_CYCLE_3 = 'd12,
                                S_CYCLE_4 = 'd13
+                               //S_CYCLE_5 = 'd14;
                               } statetype;
                                 
     statetype current_state, next_state;                            
@@ -117,7 +115,8 @@ module control(
             S_CYCLE_2: next_state = S_CYCLE_3;
             S_CYCLE_3: next_state = S_CYCLE_4;
             //S_CYCLE_3: next_state = S_LOAD_C;
-            //S_CYCLE_4: next state = S_LOAD_X;
+            S_CYCLE_4: next_state = S_LOAD_A;
+            //S_CYCLE_5: next_state = S_LOAD_A;
             
             default:   next_state = S_LOAD_A_RST;
         endcase
@@ -129,7 +128,10 @@ module control(
         ld_alu_out = 1'b0;
         ld_a = 1'b0;
         ld_b = 1'b0;
+        ld_c = 1'b0;
+        ld_x = 1'b0;
         ld_r = 1'b0;
+        
         alu_select_a = 2'b0;
         alu_select_b = 2'b0;
         alu_op       = 1'b0;
@@ -146,38 +148,60 @@ module control(
             S_LOAD_B: begin
                 ld_b = 1'b1;
                 end
-            S_CYCLE_0: begin // Do A <- A * A
+			S_LOAD_C: begin
+                ld_c = 1'b1;
+                end
+			S_LOAD_X: begin
+                ld_x = 1'b1;
+                end
+            S_CYCLE_0: begin // Do A <- A * A. Modify this to be (x * x)
                 ld_alu_out = 1'b1; 
-                ld_a = 1'b1; // store result back into A
-                alu_select_a = 2'b0; // Select register A
-                alu_select_b = 2'b0; // Also select register A
+                ld_a = 1'b1;
+                //ld_x = 1'b1; // store result back into x
+                alu_select_a = 2'b00; // Select register A
+		//ld_alu_out = 1'b0;
+                alu_select_b = 2'b11; // Also select register x
+                //ld_a = 1'b1;
                 alu_op = 1'b1; // Do multiply operation
             end
-            S_CYCLE_1: begin
-                ld_r = 1'b1; // store result in result register
-                alu_select_a = 2'b0; // Select register A
-                alu_select_b = 2'b1; // Select register B
-                alu_op = 1'b0; // Do Add operation
+            S_CYCLE_1: begin //do A*(x^2)
+		ld_alu_out = 1'b1;
+                ld_a = 1'b1; // store result in result register
+                alu_select_a = 2'b00; // Select register A
+		//ld_alu_out = 1'b0;
+                alu_select_b = 2'b11; // Select register x
+                alu_op = 1'b1; // Do multiply operation
             end
             //ADD LOGIC FOR CYCLES 2, 3 AND 4. MORE CYCLES?
-            S_CYCLE_2: begin
-                ld_r = 1'b1; // store result in result register
-                alu_select_a = 2'b0; // Select register A
-                alu_select_b = 2'b1; // Select register B
+            S_CYCLE_2: begin //do B*x
+		ld_alu_out = 1'b1;
+                ld_b = 1'b1; // store result in result register
+                alu_select_a = 2'b01; // Select register B
+		ld_alu_out = 1'b0;
+                alu_select_b = 2'b11; // Select register x
+                alu_op = 1'b1; // Do multiply operation
+            end
+            S_CYCLE_3: begin //add A*(x^2) + B*x
+		ld_alu_out = 1'b1;
+                ld_a = 1'b1; // store result in result register
+                alu_select_a = 2'b00; // Select register A
+                alu_select_b = 2'b01; // Select register B
                 alu_op = 1'b0; // Do Add operation
             end
-            S_CYCLE_3: begin
+            S_CYCLE_4: begin // Add + C
+		ld_alu_out = 1'b1;
                 ld_r = 1'b1; // store result in result register
-                alu_select_a = 2'b0; // Select register A
-                alu_select_b = 2'b1; // Select register B
+                alu_select_a = 2'b00; // Select register A
+		//ld_alu_out = 1'b0;
+                alu_select_b = 2'b10; // Select register C
                 alu_op = 1'b0; // Do Add operation
             end
-            S_CYCLE_4: begin
-                ld_r = 1'b1; // store result in result register
-                alu_select_a = 2'b0; // Select register A
-                alu_select_b = 2'b1; // Select register B
-                alu_op = 1'b0; // Do Add operation
-            end
+            //S_CYCLE_5: begin
+                //ld_r = 1'b1; // store result in result register
+               // alu_select_a = 2'b0; // Select register A
+                //alu_select_b = 2'b1; // Select register B
+               // alu_op = 1'b0; // Do Add operation
+           // end
         // We don't need a default case since we already made sure all of our outputs were assigned a value at the start of the always block.
         endcase
     end // enable_signals
@@ -198,14 +222,14 @@ module datapath(
     input logic ld_alu_out,
     input logic ld_a, ld_b,
     // TODO: Add additional signals from control path here. ==> DONE
-    input logic ld_r, ld_x,
+    input logic ld_r, ld_x, ld_c,
     input logic alu_op,
-    input logic alu_select_a, alu_select_b, alu_select_c, alu_select_x
+    input logic alu_select_a, alu_select_b,
     output logic [7:0] data_result
     );
 
     // input logic logicisters
-    logic [7:0] a, b;
+    logic [7:0] a, b, c, x;
 
     // output logic of the alu
     logic [7:0] alu_out;
@@ -225,8 +249,8 @@ module datapath(
             if(ld_a) a <= ld_alu_out ? alu_out : data_in; // load alu_out if load_alu_out signal is high, otherwise load from data_in
             if(ld_b) b <= ld_alu_out ? alu_out : data_in; 
             //TODO: Add signals to set additional registers. 
-            if (ld_c) c <= ld_alu_out ? alu_out : data_in;
-            if (ld_x) x <= ld_alu_out ? alu_out : data_in;
+            if (ld_c) c <= data_in;
+            if (ld_x) x <= data_in;
             // Note that only registers A and B have a mux to load values from data_in or from alu_out
         end
     end
@@ -244,14 +268,18 @@ module datapath(
     // The ALU input logic multiplexers
     always_comb begin
         case (alu_select_a)
-            1'd0: alu_a = a;
-            1'd1: alu_a = b;
+            2'd00: alu_a = a;
+            2'd01: alu_a = b;
+            2'd10: alu_a = c;
+            2'd11: alu_a = x;
             default: alu_a = 8'b0;
         endcase
 
         case (alu_select_b)
-            1'd0: alu_b = a;
-            1'd1: alu_b = b;
+            2'd00: alu_b = a;
+            2'd01: alu_b = b;
+            2'd10: alu_b = c;
+            2'd11: alu_b = x;
             default: alu_b = 8'b0;
         endcase
     end
