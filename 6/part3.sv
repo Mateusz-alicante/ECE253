@@ -1,3 +1,4 @@
+// Original
 module part3(
 input logic Clock,
 input logic Reset,
