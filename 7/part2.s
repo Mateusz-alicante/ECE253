@@ -2,6 +2,8 @@
 .global _start
 .text
 
+# Searches for longest string of 1s in WORD data
+
 _start:
     la s2, LIST # Load the memory address into s2
     lw s3, 0(s2)
@@ -9,7 +11,7 @@ _start:
 
 LOOP:
     beqz s3, END # Loop until data contains no more 1’s
-    srli s2, s3, 1 # Perform SHIFT, followed by AND
+    srli s2, s3, 1 # Perform SHIFT, followed by AND  #Place shifted s3 in s2
     and s3, s3, s2
     addi s4, s4, 1 # Count the string lengths so far
     b LOOP
@@ -21,4 +23,4 @@ END:
 .global LIST
 .data
 LIST:
-.word 0x103fe00f
+.word 0xffff
